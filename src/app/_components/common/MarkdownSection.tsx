@@ -12,7 +12,6 @@ type Props = {
 
 export default async function MarkdownSection({ fileUrl }: Props) {
   const fileFetcher = async () => {
-    console.log(1111, process.env)
     return await (await fetch(process.env.HOST + fileUrl)).text();
   }
 
