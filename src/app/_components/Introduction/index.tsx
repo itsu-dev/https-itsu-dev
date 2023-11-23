@@ -11,6 +11,14 @@ const Wrapper = styled.article`
   & > section {
     width: 100%;
   }
+
+  @media (max-width: 1100px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
 `;
 
 export default function Introduction() {

@@ -4,8 +4,20 @@ import Heading from '@/app/_components/common/Heading';
 import Link from 'next/link';
 import Section from '@/app/_components/common/Section';
 
+const Wrapper = styled.section`
+  width: 100%;
+
+  @media (max-width: 1100px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;;
+  }
+`;
+
 const MyIconWrapper = styled.div`
   background-color: white;
+  position: relative;
   width: 350px;
   height: 350px;
   border-radius: 175px;
@@ -16,6 +28,12 @@ const MyIconWrapper = styled.div`
   :hover {
     box-shadow: var(--shadow);
     transform: rotateY(360deg);
+  }
+
+  @media (max-width: 599px) {
+    width: 90vw;
+    height: 90vw;
+    border-radius: 45vw;
   }
 `;
 
@@ -28,6 +46,15 @@ const Description = styled.p`
 const Content = styled.div`
   width: 100%;
   margin-top: 2rem;
+
+  @media (max-width: 1100px) {
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 8px 0;
+  }
 `;
 
 const Affiliations = styled.ul`
@@ -40,12 +67,12 @@ const Affiliations = styled.ul`
 
 export default function Overview() {
   return (
-    <Section>
+    <Wrapper>
       <MyIconWrapper>
-        <Image src={'icon.svg'} alt={'自分のアイコン'} width={350} height={350} />
+        <Image src={'icon.svg'} alt={'自分のアイコン'} layout={'fill'} objectFit={'contain'}/>
       </MyIconWrapper>
       <Content>
-        <Heading as={'h1'}>ちゅるり</Heading>
+        <h1>ちゅるり</h1>
         <Description>たべることがすき</Description>
         <Affiliations>
           <li>筑波大学情報メディア創成学類3年</li>
@@ -58,6 +85,6 @@ export default function Overview() {
           </li>
         </Affiliations>
       </Content>
-    </Section>
+    </Wrapper>
   );
 }

@@ -9,20 +9,33 @@ const Main = styled.main`
   justify-content: flex-start;
   align-items: center;
   padding: 6rem 10rem 0;
-  max-width: var(--max-width);
   
   & > article {
     width: 100%;
   }
+
+  @media (max-width: 1100px) {
+    padding: 2rem 24px;
+  }
 `;
 
 const ContentsWrapper = styled.article`
-  max-width: var(--max-width);
   width: 100%;
   padding: 2rem 10rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 2rem;
+
+  @media (max-width: 1100px) {
+    padding: 0 24px;
+  }
+
+  @media (max-width: 599px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export default function Home() {

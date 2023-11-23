@@ -12,6 +12,8 @@
   --color-twitter: #1da1f2;
   --color-github: #000000;
   --color-zenn: #3ea8ff;
+  --sp: 599px;
+  --tab: 1100px;
 }
 
 html,
@@ -39,4 +41,8 @@ a:hover {
 
 button, button:focus {
   outline: none;
+}
+
+* {
+  box-sizing: border-box;
 }

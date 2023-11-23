@@ -23,6 +23,12 @@ const Wrapper = styled.div`
     bottom: -5px;
     left: 0;
   }
+
+  @media (max-width: 599px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const HeaderWrapper = styled.div`
@@ -34,6 +40,10 @@ const Title = styled.p`
   font-size: 1.0rem;
   margin: 8px 0 0;
   font-weight: normal;
+
+  @media (max-width: 599px) {
+    text-align: center;
+  }
 `;
 
 export default function Header() {
