@@ -33,8 +33,8 @@ export default function Home() {
         <Introduction />
       </Main>
       <ContentsWrapper>
-        <MarkdownSection fileUrl={'markdowns/past_affiliations.md'} />
-        <MarkdownSection fileUrl={'markdowns/works.md'} />
+        <MarkdownSection fileUrl={'past_affiliations.md'} />
+        <MarkdownSection fileUrl={'works.md'} />
       </ContentsWrapper>
     </>
   );
