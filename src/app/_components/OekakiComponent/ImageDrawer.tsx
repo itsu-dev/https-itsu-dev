@@ -140,7 +140,9 @@ export default function ImageDrawer() {
       <Section>
         <h2>おえかきする</h2>
         <CanvasWrapper>
-          {context.selectedImageId == null && <DescriptionInput placeholder={'説明を入力（任意）'} />}
+          {context.selectedImageId == null &&
+            <DescriptionInput type={'text'} maxLength={20} placeholder={'説明を入力（任意、20文字まで）'}
+                              onChange={(e) => context.setDescription(e.target.value)} value={context.description} />}
           <Canvas ref={ref} width={512} height={512} onMouseDown={onMouseDown} onMouseMove={onMouseMove} />
           <MeterWrapper>
             {drawCount < DRAWING_COUNT_LIMIT &&
