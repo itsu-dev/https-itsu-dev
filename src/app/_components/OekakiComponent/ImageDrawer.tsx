@@ -1,9 +1,8 @@
 import { styled } from '@linaria/react';
-import Heading from '@/app/_components/common/Heading';
 import Section from '@/app/_components/common/Section';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import useOekakiHelper from '@/app/_hooks/useOekakiHelper';
-import { IconColorPicker, IconEdit } from '@tabler/icons-react';
+import { IconBrush, IconClock } from '@tabler/icons-react';
 import { COLOR_PALETTE, DRAWING_COUNT_LIMIT, DRAWING_TIME_LIMIT } from '@/app/_consts/oekaki';
 
 const Wrapper = styled.article`
@@ -56,7 +55,22 @@ const NoInk = styled.p`
   margin: 1px 0;
 `;
 
+const StatusWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const BrushesWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
 const ColorChooserWrapper = styled(FlexWrapper)`
+  width: auto;
   margin-top: 6px;
 `;
 
@@ -90,14 +104,7 @@ const FinishButton = styled.button`
 export default function ImageDrawer() {
   const ref = useRef<HTMLCanvasElement>(null);
 
-  const onOekakiStart = useCallback(() => {
-
-  }, []);
-  const [color, setColor] = useState<string>('#000000');
-  const { onMouseDown, onMouseMove, onMouseUp, finalize, setCanvas, timer, drawCount } = useOekakiHelper({
-    onOekakiStart,
-    color,
-  });
+  const { onMouseDown, onMouseMove, finalize, setCanvas, setColor, timer, drawCount, color } = useOekakiHelper();
 
   useLayoutEffect(() => {
     setCanvas(ref.current!);
@@ -108,12 +115,11 @@ export default function ImageDrawer() {
       <Section>
         <h2>おえかきする</h2>
         <CanvasWrapper>
-          <Canvas ref={ref} width={512} height={512} onMouseDown={onMouseDown} onMouseMove={onMouseMove}
-                  onMouseUp={onMouseUp} />
+          <Canvas ref={ref} width={512} height={512} onMouseDown={onMouseDown} onMouseMove={onMouseMove} />
           <FlexWrapper>
             {drawCount < DRAWING_COUNT_LIMIT &&
               <>
-                <label htmlFor='remaining-time'>残り時間</label>
+                <IconClock size={'1.5rem'} color={'var(--foreground-sub-color)'} />
                 <Meter id={'remaining-time'} min={0} max={DRAWING_TIME_LIMIT} value={timer} />
               </>
             }
@@ -121,14 +127,21 @@ export default function ImageDrawer() {
               <NoInk>あーあ、筆のインクが無くなってしまいました...</NoInk>
             }
           </FlexWrapper>
-          <ColorChooserWrapper>
-            {Object.keys(COLOR_PALETTE).filter((key) => key !== '255,255,255').map((c, index) =>
-              <ChooseColorButton key={index} style={{
-                backgroundColor: `rgb(${c})`,
-                border: color === `rgb(${c})` ? '3px solid var(--border-color)' : '3px solid transparent',
-              }} onClick={() => setColor(`rgb(${c})`)} />,
-            )}
-          </ColorChooserWrapper>
+          <StatusWrapper>
+            <ColorChooserWrapper>
+              {Object.keys(COLOR_PALETTE).filter((key) => key !== '255,255,255').map((c, index) =>
+                <ChooseColorButton key={index} style={{
+                  backgroundColor: `rgb(${c})`,
+                  border: color === `rgb(${c})` ? '3px solid var(--border-color)' : '3px solid transparent',
+                }} onClick={() => setColor(`rgb(${c})`)} />,
+              )}
+            </ColorChooserWrapper>
+            <BrushesWrapper>
+              {new Array(DRAWING_COUNT_LIMIT - drawCount).fill(null).map((_, index) =>
+                <IconBrush key={index} size={'1.5rem'} color={'var(--foreground-sub-color)'} />,
+              )}
+            </BrushesWrapper>
+          </StatusWrapper>
           <FinishButton onClick={finalize}>かんせい</FinishButton>
         </CanvasWrapper>
       </Section>

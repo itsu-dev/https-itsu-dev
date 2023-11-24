@@ -1,25 +1,23 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { COLOR_PALETTE, DRAWING_COUNT_LIMIT, DRAWING_TIME_LIMIT } from '@/app/_consts/oekaki';
-import { decodeImage, encodeImage } from '@/app/_features/oekakiutils';
+import React, { Dispatch, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { DRAWING_COUNT_LIMIT, DRAWING_TIME_LIMIT } from '@/app/_consts/oekaki';
+import { encodeImage } from '@/app/_features/oekakiutils';
+import { OekakiContext } from '@/app/_contexts/OekakiContext';
 
 type ReturnType = {
   onMouseDown: (e: React.MouseEvent<HTMLCanvasElement>) => void;
   onMouseMove: (e: React.MouseEvent<HTMLCanvasElement>) => void;
-  onMouseUp: (e: React.MouseEvent<HTMLCanvasElement>) => void;
   setCanvas: (c: HTMLCanvasElement) => void;
+  setColor: Dispatch<string>;
   finalize: () => Promise<boolean>;
   timer: number;
   drawCount: number;
-}
-
-type Args = {
-  onOekakiStart: VoidFunction;
   color: string;
 }
 
-export default function useOekakiHelper({ onOekakiStart, color }: Args): ReturnType {
+export default function useOekakiHelper(): ReturnType {
+  const context = useContext(OekakiContext);
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const previousPoint = useRef<[number, number]>([0, 0]);
   const initialized = useRef<boolean>(false);
@@ -27,20 +25,7 @@ export default function useOekakiHelper({ onOekakiStart, color }: Args): ReturnT
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [isDrawing, setDrawing] = useState<boolean>(false);
   const [drawCount, setDrawCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (!initialized.current && canvas) {
-      initialized.current = true;
-
-      const g = canvas.getContext('2d');
-      if (g == null) {
-        return;
-      }
-      g.fillStyle = 'white';
-      g.fillRect(0, 0, 512, 512);
-      g.lineWidth = 3;
-    }
-  }, [canvas, initialized]);
+  const [color, setColor] = useState<string>('rgb(0,0,0)');
 
   const onMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (drawCount >= DRAWING_COUNT_LIMIT) {
@@ -63,8 +48,7 @@ export default function useOekakiHelper({ onOekakiStart, color }: Args): ReturnT
         clearTimeout(timerId.current!);
       }
     }, 10);
-    onOekakiStart();
-  }, [canvas, color, drawCount, onOekakiStart]);
+  }, [canvas, color, drawCount]);
 
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing || timer === 0 || drawCount >= DRAWING_COUNT_LIMIT) {
@@ -81,7 +65,7 @@ export default function useOekakiHelper({ onOekakiStart, color }: Args): ReturnT
     previousPoint.current = point;
   }, [canvas, drawCount, isDrawing, timer]);
 
-  const onMouseUp = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+  const onMouseUp = useCallback(() => {
     if (drawCount >= DRAWING_COUNT_LIMIT) {
       return;
     }
@@ -96,11 +80,32 @@ export default function useOekakiHelper({ onOekakiStart, color }: Args): ReturnT
     const gc = canvas!.getContext('2d')!;
     const img = gc.getImageData(0, 0, 512, 512).data;
 
-    // TODO
-    const decoded = decodeImage(gc, encodeImage(new Uint8Array(img)));
-    gc.putImageData(decoded, 0, 0);
-    return true;
-  }, [canvas]);
+    const encoded = encodeImage(new Uint8Array(img));
+    context.setImageBuffer(encoded);
+    context.setState('submit');
 
-  return { onMouseDown, onMouseMove, onMouseUp, finalize, setCanvas, timer, drawCount };
+    return true;
+  }, [canvas, context]);
+
+  useEffect(() => {
+    if (!initialized.current && canvas) {
+      initialized.current = true;
+
+      const g = canvas.getContext('2d');
+      if (g == null) {
+        return;
+      }
+      g.fillStyle = 'white';
+      g.fillRect(0, 0, 512, 512);
+      g.lineWidth = 3;
+    }
+
+    document.addEventListener('mouseup', onMouseUp);
+
+    return () => {
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [canvas, initialized, onMouseUp]);
+
+  return { onMouseDown, onMouseMove, finalize, setCanvas, setColor, timer, drawCount, color };
 }

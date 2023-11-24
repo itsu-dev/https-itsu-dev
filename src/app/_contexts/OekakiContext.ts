@@ -9,6 +9,8 @@ type OekakiContext = {
   setState: Dispatch<SetStateAction<OekakiState>>;
   selectedImageId: string | null;
   setSelectedImageId: Dispatch<SetStateAction<string | null>>;
+  imageBuffer: Uint8Array | null;
+  setImageBuffer: Dispatch<SetStateAction<Uint8Array | null>>;
 }
 
 const defaultContext: OekakiContext = {
@@ -16,6 +18,8 @@ const defaultContext: OekakiContext = {
   setState: () => undefined,
   selectedImageId: null,
   setSelectedImageId: () => undefined,
+  imageBuffer: null,
+  setImageBuffer: () => undefined,
 };
 
 export const OekakiContext = React.createContext<OekakiContext>(defaultContext);
@@ -28,5 +32,6 @@ const useMemoizedState = <T>(defaultValue: T): [T, React.Dispatch<React.SetState
 export default function useOekakiContext() {
   const [state, setState] = useMemoizedState<OekakiState>(defaultContext.state);
   const [selectedImageId, setSelectedImageId] = useMemoizedState<string | null>(defaultContext.selectedImageId);
-  return { state, setState, selectedImageId, setSelectedImageId };
+  const [imageBuffer, setImageBuffer] = useMemoizedState<Uint8Array | null>(defaultContext.imageBuffer);
+  return { state, setState, selectedImageId, setSelectedImageId, imageBuffer, setImageBuffer };
 }
