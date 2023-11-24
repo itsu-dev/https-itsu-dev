@@ -7,6 +7,7 @@ import { styled } from '@linaria/react';
 import ImageDrawer from '@/app/_components/OekakiComponent/ImageDrawer';
 
 const Wrapper = styled.div`
+  width: 100%;
 `;
 
 export default function OekakiComponent() {

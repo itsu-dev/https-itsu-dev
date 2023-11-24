@@ -26,6 +26,14 @@ const ListWrapper = styled.section`
   grid-gap: 16px;
   justify-self: center;
   align-self: center;
+
+  @media (max-width: 599px) {
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  }
+
+  @media (min-width: 599px) and (max-width: 1100px) {
+    grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
+  }
 `;
 
 const Card = styled.div`

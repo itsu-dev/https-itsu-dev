@@ -66,7 +66,7 @@ export default function useOekakiHelper(): ReturnType {
   }, [canvas, drawCount, isDrawing, timer]);
 
   const onMouseUp = useCallback(() => {
-    if (drawCount >= DRAWING_COUNT_LIMIT) {
+    if (!isDrawing || drawCount >= DRAWING_COUNT_LIMIT) {
       return;
     }
 
@@ -74,7 +74,7 @@ export default function useOekakiHelper(): ReturnType {
     setTimer(DRAWING_TIME_LIMIT);
     setDrawCount((prev) => prev + 1);
     clearTimeout(timerId.current!);
-  }, [drawCount]);
+  }, [drawCount, isDrawing]);
 
   const finalize = useCallback(async (): Promise<boolean> => {
     const gc = canvas!.getContext('2d')!;

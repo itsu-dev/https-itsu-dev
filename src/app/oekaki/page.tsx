@@ -27,6 +27,15 @@ const ContentArea = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
   column-gap: 2em;
+
+  @media (max-width: 1100px) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+  }
 `;
 
 const Description = styled.p`
@@ -46,8 +55,8 @@ export default function Oekaki() {
           <Section>
             <h2>ルール</h2>
             <ul>
-              <li>1枚の絵につき、{DRAWING_COUNT_LIMIT}筆まで描くことができます</li>
-              <li>ただし1筆につき{DRAWING_TIME_LIMIT / 1000}秒までしか描くことができません</li>
+              <li>1枚の絵につき{DRAWING_COUNT_LIMIT}筆まで描くことができます</li>
+              <li>ただし、1筆につき{DRAWING_TIME_LIMIT / 1000}秒までしか描くことができません</li>
               <li>いちど描いたらもとに戻すことはできません</li>
               <li>ひとがいやな気持ちになることは描かないでください</li>
             </ul>

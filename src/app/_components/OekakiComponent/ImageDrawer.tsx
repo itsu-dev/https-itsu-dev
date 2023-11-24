@@ -1,9 +1,10 @@
 import { styled } from '@linaria/react';
 import Section from '@/app/_components/common/Section';
-import { useLayoutEffect, useRef } from 'react';
+import { useContext, useLayoutEffect, useRef } from 'react';
 import useOekakiHelper from '@/app/_hooks/useOekakiHelper';
 import { IconBrush, IconClock } from '@tabler/icons-react';
 import { COLOR_PALETTE, DRAWING_COUNT_LIMIT, DRAWING_TIME_LIMIT } from '@/app/_consts/oekaki';
+import { OekakiContext } from '@/app/_contexts/OekakiContext';
 
 const Wrapper = styled.article`
   width: 100%;
@@ -38,6 +39,10 @@ const FlexWrapper = styled.div`
   gap: 1.0rem;
 `;
 
+const MeterWrapper = styled(FlexWrapper)`
+  margin-top: 6px;
+`;
+
 const Meter = styled.meter`
   flex: 1;
   margin-top: 0;
@@ -60,6 +65,7 @@ const StatusWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 6px;
 `;
 
 const BrushesWrapper = styled.div`
@@ -67,11 +73,13 @@ const BrushesWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  background-color: #cccccc;
+  padding: 2px 8px;
+  border-radius: var(--border-radius);
 `;
 
 const ColorChooserWrapper = styled(FlexWrapper)`
   width: auto;
-  margin-top: 6px;
 `;
 
 const ChooseColorButton = styled.button`
@@ -101,8 +109,25 @@ const FinishButton = styled.button`
   }
 `;
 
+const DescriptionInput = styled.input`
+  width: 100%;
+  font-size: 1.0rem;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  margin: 0 0 1rem;
+  padding: 4px 16px;
+  outline: none;
+
+  :focus {
+    outline: none;
+    border: 2px solid var(--color-primary);
+  }
+`;
+
 export default function ImageDrawer() {
   const ref = useRef<HTMLCanvasElement>(null);
+  const context = useContext(OekakiContext);
 
   const { onMouseDown, onMouseMove, finalize, setCanvas, setColor, timer, drawCount, color } = useOekakiHelper();
 
@@ -115,8 +140,9 @@ export default function ImageDrawer() {
       <Section>
         <h2>おえかきする</h2>
         <CanvasWrapper>
+          {context.selectedImageId == null && <DescriptionInput placeholder={'説明を入力（任意）'} />}
           <Canvas ref={ref} width={512} height={512} onMouseDown={onMouseDown} onMouseMove={onMouseMove} />
-          <FlexWrapper>
+          <MeterWrapper>
             {drawCount < DRAWING_COUNT_LIMIT &&
               <>
                 <IconClock size={'1.5rem'} color={'var(--foreground-sub-color)'} />
@@ -126,7 +152,7 @@ export default function ImageDrawer() {
             {drawCount >= DRAWING_COUNT_LIMIT &&
               <NoInk>あーあ、筆のインクが無くなってしまいました...</NoInk>
             }
-          </FlexWrapper>
+          </MeterWrapper>
           <StatusWrapper>
             <ColorChooserWrapper>
               {Object.keys(COLOR_PALETTE).filter((key) => key !== '255,255,255').map((c, index) =>
@@ -137,9 +163,8 @@ export default function ImageDrawer() {
               )}
             </ColorChooserWrapper>
             <BrushesWrapper>
-              {new Array(DRAWING_COUNT_LIMIT - drawCount).fill(null).map((_, index) =>
-                <IconBrush key={index} size={'1.5rem'} color={'var(--foreground-sub-color)'} />,
-              )}
+              <IconBrush size={'1.2rem'} color={color} />
+              <span>×&nbsp;{DRAWING_COUNT_LIMIT - drawCount}</span>
             </BrushesWrapper>
           </StatusWrapper>
           <FinishButton onClick={finalize}>かんせい</FinishButton>
