@@ -21,6 +21,7 @@
     "marked": "^10.0.0",
     "next": "13.5.4",
     "next-linaria": "^0.11.0",
+    "pako": "^2.1.0",
     "react": "^18",
     "react-dom": "^18",
     "rss-parser": "^3.13.0"
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@babel/plugin-transform-private-methods": "^7.23.3",
     "@types/node": "^20",
+    "@types/pako": "^2.0.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

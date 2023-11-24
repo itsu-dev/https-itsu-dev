@@ -1,4 +1,5 @@
 import { COLOR_PALETTE } from '@/app/_consts/oekaki';
+import { deflate, inflate } from 'pako';
 
 /**
  * rgb値をグレースケールに変換する
@@ -152,7 +153,7 @@ export const encodeImage = (_data: Uint8Array): Uint8Array => {
 
   writeBuffer();
 
-  return new Uint8Array(result);
+  return deflate(new Uint8Array(result));
 };
 
 /**
@@ -161,7 +162,8 @@ export const encodeImage = (_data: Uint8Array): Uint8Array => {
  * @param array
  */
 export const decodeImage = (gc: CanvasRenderingContext2D, array: Uint8Array): ImageData => {
-  const data = Array.from(array.slice(1));
+  const inflated = inflate(array);
+  const data = Array.from(inflated.slice(1));
   const imageData = gc.createImageData(gc.getImageData(0, 0, 512, 512));
   const img = imageData.data;
 
@@ -200,7 +202,7 @@ export const decodeImage = (gc: CanvasRenderingContext2D, array: Uint8Array): Im
     }
   }
 
-  if (array[0] === 0xff) {
+  if (inflated[0] === 0xff) {
     // should be refactored
     const rotated = rotateImageRight(rotateImageRight(rotateImageRight(new Uint8Array(img))));
     for (let i = 0; i < rotated.length; i += 4) {
