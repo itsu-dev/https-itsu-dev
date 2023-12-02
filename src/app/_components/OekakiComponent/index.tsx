@@ -7,18 +7,18 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-export default function OekakiComponent({searchParams}: {searchParams: {image_id?: string, gallery?: string}}) {
+export default function OekakiComponent({imageId, gallery}: {imageId?: string, gallery?: string}) {
   return (
     <Wrapper>
       {
         (() => {
           switch (true) {
-            case searchParams.gallery != null:
-              return <ImageViewer imageId={searchParams.gallery} />
-            case searchParams.image_id == null:
+            case gallery != null:
+              return <ImageViewer imageId={gallery} />
+            case imageId == null:
               return <ImageList />;
-            case searchParams.image_id != null:
-              return <ImageDrawer imageId={searchParams.image_id} />
+            case imageId != null:
+              return <ImageDrawer imageId={imageId} />
             default:
               return null;
           }

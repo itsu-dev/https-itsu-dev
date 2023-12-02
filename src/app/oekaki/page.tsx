@@ -71,7 +71,7 @@ export default function Oekaki({searchParams}: {searchParams: {image_id?: string
             </ul>
           </Section>
         </article>
-        <OekakiComponent searchParams={searchParams} />
+        <OekakiComponent imageId={searchParams.image_id} gallery={searchParams.gallery} />
       </ContentArea>
     </Main>
   )
