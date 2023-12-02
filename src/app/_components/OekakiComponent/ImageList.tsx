@@ -1,13 +1,14 @@
 import { styled } from '@linaria/react';
 import { SiAddthis } from '@icons-pack/react-simple-icons';
 import Heading from '@/app/_components/common/Heading';
-import { useCallback, useContext } from 'react';
-import { OekakiContext } from '@/app/_contexts/OekakiContext';
+import OekakiImageCard from '@/app/_components/OekakiComponent/OekakiImageCard';
+import Image from 'next/image';
+import { IMAGE_MAX_DRAW_COUNT } from '@/app/_consts/oekaki';
 
 const Wrapper = styled.article`
   width: 100%;
   animation: openAnimation .5s ease forwards;
-  
+
   @keyframes openAnimation {
     from {
       opacity: 0;
@@ -16,7 +17,7 @@ const Wrapper = styled.article`
       opacity: 1;
     }
   }
-`
+`;
 
 const ListWrapper = styled.section`
   width: 100%;
@@ -36,54 +37,42 @@ const ListWrapper = styled.section`
   }
 `;
 
-const Card = styled.div`
-  height: 0;
-  padding-bottom: 100%;
-  position: relative;
-  cursor: pointer;
-  transition: all .3s;
-  border: 1px solid var(--border-color);
-  
-  :hover {
-    scale: 1.03;
+const imagesFetcher = async (): Promise<Result<OekakiImage[]>> => {
+  try {
+    const response = await fetch('https://itsu-dev-oekaki.itsu020402.workers.dev/api/oekaki/images', { cache: 'no-cache' });
+    if (!response.ok) {
+      return { success: false };
+    }
+
+    const data = await response.json();
+    if (!data.success) {
+      return { success: false };
+    }
+
+    return { success: true, result: data.images };
+
+  } catch (e) {
+    return { success: false };
   }
-`;
+};
 
-const CardInnerWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export default function ImageList() {
-  const context = useContext(OekakiContext);
-  const onClickCard = useCallback((imageId: string | null) => {
-    context.setSelectedImageId(imageId);
-    context.setState('draw');
-  }, [context]);
+export default async function ImageList() {
+  const images = await imagesFetcher();
 
   return (
     <Wrapper>
       <Heading as={'h2'}>描きたい絵を選ぶ</Heading>
       <ListWrapper>
-        <Card>
-          <CardInnerWrapper onClick={() => onClickCard(null)}>
-            <SiAddthis color={'var(--color-primary)'} size={32} />
-          </CardInnerWrapper>
-        </Card>
-        {new Array(20).fill(null).map((a, index) =>
-          <Card key={index} role={'button'} onClick={() => onClickCard('test')}>
-            <CardInnerWrapper>
-              aaa
-            </CardInnerWrapper>
-          </Card>
+        <OekakiImageCard imageId={''}>
+          <SiAddthis color={'var(--color-primary)'} size={32} />
+        </OekakiImageCard>
+        {images.success && images.result.map((image, index) =>
+          <OekakiImageCard key={index} imageId={image.id} isCompleted={image.count >= IMAGE_MAX_DRAW_COUNT}>
+            <Image src={`https://i.imgur.com/${image.imgurId}.jpg`} alt={image.id} layout={'cover'} fill/>
+          </OekakiImageCard>
         )}
+        {!images.success && <p>エラーが発生しました</p>}
       </ListWrapper>
     </Wrapper>
-  )
+  );
 }

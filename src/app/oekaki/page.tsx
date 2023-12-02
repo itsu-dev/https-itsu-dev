@@ -1,26 +1,35 @@
-"use client";
-
 import { styled } from '@linaria/react';
-import useOekakiContext, { OekakiContext } from '@/app/_contexts/OekakiContext';
 import OekakiComponent from '@/app/_components/OekakiComponent';
 import Section from '@/app/_components/common/Section';
 import { DRAWING_COUNT_LIMIT, DRAWING_TIME_LIMIT } from '@/app/_consts/oekaki';
+import Link from 'next/link';
 
 const Main = styled.main`
-  padding: 0 10rem;
+  padding: 2rem 10rem 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto;
+  
+  @media (max-width: 599px) {
+    padding: 2rem 4px;
+  }
 
-  @media (max-width: 1100px) {
+  @media (min-width: 599px) and (max-width: 1100px) {
     padding: 2rem 24px;
   }
   
   h1 {
     width: 100%;
   }
+`;
+
+const TopLink = styled.p`
+  text-align: left;
+  width: 100%;
+  font-size: 0.8rem;
+  margin-bottom: -1.0rem;
 `;
 
 const ContentArea = styled.div`
@@ -34,7 +43,6 @@ const ContentArea = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 2rem;
   }
 `;
 
@@ -42,15 +50,15 @@ const Description = styled.p`
   margin-top: 3px;
 `;
 
-export default function Oekaki() {
-  const context = useOekakiContext();
+export default function Oekaki({searchParams}: {searchParams: {image_id?: string, gallery?: string}}) {
   return (
     <Main>
+      <TopLink><Link href={'/oekaki'}>トップへ戻る</Link></TopLink>
       <h1>おえかき</h1>
       <ContentArea>
         <article>
           <Section>
-            <Description>ほかの人が描いた絵を上書きしておもしろい絵を作ろう！</Description>
+            <Description>ほかの人が描いた絵を上書きしておもしろい絵を描こう！</Description>
           </Section>
           <Section>
             <h2>ルール</h2>
@@ -58,13 +66,12 @@ export default function Oekaki() {
               <li>1枚の絵につき{DRAWING_COUNT_LIMIT}筆まで描くことができます</li>
               <li>ただし、1筆につき{DRAWING_TIME_LIMIT / 1000}秒までしか描くことができません</li>
               <li>いちど描いたらもとに戻すことはできません</li>
+              <li>1枚の絵を最大10人で描くことができます</li>
               <li>ひとがいやな気持ちになることは描かないでください</li>
             </ul>
           </Section>
         </article>
-        <OekakiContext.Provider value={context}>
-          <OekakiComponent />
-        </OekakiContext.Provider>
+        <OekakiComponent searchParams={searchParams} />
       </ContentArea>
     </Main>
   )

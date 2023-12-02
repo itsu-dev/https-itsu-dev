@@ -1,4 +1,4 @@
-import { COLOR_PALETTE } from '@/app/_consts/oekaki';
+import { COLOR_PALETTE, IMAGE_SIZE } from '@/app/_consts/oekaki';
 import { deflate, inflate } from 'pako';
 
 /**
@@ -35,15 +35,15 @@ const getColorCode = (_r: number, _g: number, _b: number, _a: number): number =>
 const rotateImageRight = (data: Uint8Array): Uint8Array => {
   const newData = new Uint8Array(data.length);
 
-  for (let y = 0; y < 512; y++) {
-    for (let x = 0; x < 512; x++) {
+  for (let y = 0; y < IMAGE_SIZE; y++) {
+    for (let x = 0; x < IMAGE_SIZE; x++) {
       // 元のピクセル座標
-      const originalIndex = (y * 512 + x) * 4;
+      const originalIndex = (y * IMAGE_SIZE + x) * 4;
 
       // 回転後のピクセル座標
-      const rotatedX = 512 - y - 1;
+      const rotatedX = IMAGE_SIZE - y - 1;
       const rotatedY = x;
-      const newIndex = (rotatedY * 512 + rotatedX) * 4;
+      const newIndex = (rotatedY * IMAGE_SIZE + rotatedX) * 4;
 
       // ピクセルのコピー
       newData[newIndex] = data[originalIndex];
@@ -153,7 +153,7 @@ export const encodeImage = (_data: Uint8Array): Uint8Array => {
 
   writeBuffer();
 
-  return deflate(new Uint8Array(result));
+  return new Uint8Array([0x23, 0x52, 0xff, 0xac, ...Array.from(deflate(new Uint8Array(result)))]);
 };
 
 /**
@@ -164,7 +164,7 @@ export const encodeImage = (_data: Uint8Array): Uint8Array => {
 export const decodeImage = (gc: CanvasRenderingContext2D, array: Uint8Array): ImageData => {
   const inflated = inflate(array);
   const data = Array.from(inflated.slice(1));
-  const imageData = gc.createImageData(gc.getImageData(0, 0, 512, 512));
+  const imageData = gc.createImageData(gc.getImageData(0, 0, IMAGE_SIZE, IMAGE_SIZE));
   const img = imageData.data;
 
   const colorCodeMap: number[][] = new Array(Object.keys(COLOR_PALETTE).length).fill([]);

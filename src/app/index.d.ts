@@ -15,3 +15,21 @@ type RSSFeed = {
   url: string;
   unixTime: number;
 }
+
+type OekakiImage = {
+  id: string;
+  author: string;
+  ip: string;
+  created_at: number;
+  imgurId: string;
+  description?: string;
+  payload?: number[];
+  count: number;
+}
+
+type OekakiHistory = {
+  id: string;
+  author: string;
+  ip: string;
+  created_at: number;
+}
