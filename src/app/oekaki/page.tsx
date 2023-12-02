@@ -76,3 +76,5 @@ export default function Oekaki({searchParams}: {searchParams: {image_id?: string
     </Main>
   )
 }
+
+export const runtime = 'edge';
