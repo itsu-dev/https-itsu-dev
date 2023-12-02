@@ -149,7 +149,17 @@ export default function useOekakiHelper(imageId: string): ReturnType {
           }
 
           setMasterImage(json.result);
-          g.putImageData(decodeImage(g, new Uint8Array(json.result.payload!)), 0, 0);
+
+          if (json.result.type === 'bin') {
+            g.putImageData(decodeImage(g, new Uint8Array(json.result.payload!)), 0, 0);
+          } else {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.src = `https://i.imgur.com/${json.result.imgurId}.jpg`;
+            img.onload = () => {
+              g.drawImage(img, 0, 0);
+            }
+          }
 
         } else if (g) {
           g.fillStyle = 'white';

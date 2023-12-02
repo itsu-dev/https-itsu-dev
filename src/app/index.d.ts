@@ -25,6 +25,7 @@ type OekakiImage = {
   description?: string;
   payload?: number[];
   count: number;
+  type: 'bin' | 'jpg';
 }
 
 type OekakiHistory = {
