@@ -44,7 +44,7 @@ export default async function Osirifuki() {
   return (
     <Wrapper>
       <Title>現在の状況</Title>
-      {osirifukiResponse.success && <Status isAlive={isAlive()}>生きています</Status>}
+      {osirifukiResponse.success && <Status isAlive={isAlive()}>{isAlive() ? '生きています' : 'すでに死亡しています'}</Status>}
       {!osirifukiResponse.success && <Status isAlive={false}>エラー</Status>}
       {osirifukiResponse.success &&
         <>
