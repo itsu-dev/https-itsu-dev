@@ -34,3 +34,8 @@ type OekakiHistory = {
   ip: string;
   created_at: number;
 }
+
+type OsirifukiResponse = {
+  heartBeats: number;
+  updatedAt: number;
+}
