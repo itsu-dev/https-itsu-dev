@@ -36,9 +36,12 @@ export default async function Osirifuki() {
   const osirifukiResponse = await oshirifukiFetcher();
 
   const isAlive = () => {
+    if (!osirifukiResponse.success) {
+      return false;
+    }
     const date = new Date();
     const index = Math.floor((date.getHours() * 60 + date.getMinutes()) / 5);
-    return index !== 0;
+    return osirifukiResponse.result.heartBeats[index] !== 0;
   };
 
   return (

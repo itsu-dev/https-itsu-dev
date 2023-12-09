@@ -36,6 +36,6 @@ type OekakiHistory = {
 }
 
 type OsirifukiResponse = {
-  heartBeats: number;
+  heartBeats: number[];
   updatedAt: number;
 }
