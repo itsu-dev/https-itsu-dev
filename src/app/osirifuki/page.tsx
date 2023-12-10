@@ -29,7 +29,14 @@ const oshirifukiFetcher = async (): Promise<Result<OsirifukiResponse>> => {
     return { success: false };
   }
 
-  return await res.json();
+  const json = await res.json() as Result<OsirifukiResponse>;
+  if (!json.success) {
+    return { success: false };
+  }
+
+  json.result.heartBeats = [...json.result.heartBeats.slice(9 * 60 / 5), ...json.result.heartBeats.slice(0, 9 * 60 / 5 - 1)]
+
+  return json;
 };
 
 export default async function Osirifuki() {
