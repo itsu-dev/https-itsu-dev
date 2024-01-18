@@ -10,24 +10,26 @@ const Wrapper = styled.div`
   align-items: center;
   font-size: 0.85rem;
   width: 100%;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+  //border-bottom: 1px solid var(--border-color);
   position: relative;
   
-  :after {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed var(--border-color);
-    bottom: -5px;
-    left: 0;
-  }
+  //:after {
+  //  position: absolute;
+  //  content: '';
+  //  width: 100%;
+  //  height: 1px;
+  //  border-bottom: 1px dashed var(--border-color);
+  //  bottom: -5px;
+  //  left: 0;
+  //}
 
   @media (max-width: 599px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+    padding-top: 2rem;
   }
 `;
 

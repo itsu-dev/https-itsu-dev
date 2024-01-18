@@ -60,8 +60,10 @@ const Content = styled.div`
 const Affiliations = styled.ul`
   margin: 0;
   padding: 0;
+  
   li {
     list-style-type: none;
+    margin-top: 0.5rem
   }
 `;
 

@@ -3,7 +3,7 @@ import { styled } from '@linaria/react';
 const Wrapper = styled.section`
   width: 100%;
   color: var(--foreground-color);
-
+  
   h1 {
     font-size: 1.8rem;
     margin: 0 0 8px 0;

@@ -4,6 +4,11 @@ import { styled } from '@linaria/react';
 
 const Wrapper = styled.div`
   width: 100%;
+  
+  li {
+    margin-top: 0.5rem;
+    line-height: 1.48rem;
+  }
 `;
 
 type Props = {

@@ -10,7 +10,7 @@ const Feeds = styled.div`
   margin-top: 12px;
   
   div + div {
-    padding-top: 16px; 
+    padding-top: 20px; 
   }
 `;
 
@@ -26,8 +26,25 @@ const Description = styled.p`
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
+  padding-bottom: 4px;
 `;
 
+const TitleLink = styled(Link)`
+  transition: 0.6s all;
+  position: relative;
+  
+  &:hover {
+    padding-left: 1.5rem;
+  }
+
+  &:hover::before {
+    content: '▶';
+    position: absolute;
+    font-size: 0.7rem;
+    top: 0.35rem;
+    left: 0.2rem;
+  }
+`;
 
 export default async function RSSFeeds() {
   const feeds = await parseFeeds();
@@ -45,7 +62,7 @@ export default async function RSSFeeds() {
 
   return (
     <Section>
-      <Heading as={'h1'}>書いた記事など</Heading>
+      <Heading as={'h1'} baseFontSize={1.8}>書いた記事など</Heading>
       <Feeds>
         {feeds && feeds.success && feeds.result.map((feed, index) =>
           <FeedWrapper key={index}>
@@ -55,7 +72,7 @@ export default async function RSSFeeds() {
               day: '2-digit',
             })}</span>
             </Description>
-            <Link href={feed.url}>{feed.title}</Link>
+            <TitleLink href={feed.url}>{feed.title}</TitleLink>
           </FeedWrapper>,
         )}
       </Feeds>

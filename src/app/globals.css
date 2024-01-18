@@ -1,7 +1,7 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --foreground-color: #222222;
+  --foreground-color: #333333;
   --foreground-sub-color: #777777;
   --background-color: #f8fbff;
   --link-color: #91a3b0;
@@ -12,6 +12,7 @@
   --color-twitter: #1da1f2;
   --color-github: #000000;
   --color-zenn: #3ea8ff;
+  --color-spotify: #1db954;
   --sp: 599px;
   --tab: 1100px;
 }
@@ -20,6 +21,8 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -29,10 +32,11 @@ body {
 }
 
 a {
-  color: var(--foreground-color);
   border-bottom: 1px dashed var(--foreground-color);
   text-decoration: none;
   transition: all .2s;
+  font-weight: 800;
+  color: #454953EF;
 }
 
 a:hover {

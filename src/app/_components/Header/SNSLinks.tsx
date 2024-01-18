@@ -1,5 +1,5 @@
 import { styled } from '@linaria/react';
-import { SiGithub, SiQiita, SiTwitter, SiZenn } from '@icons-pack/react-simple-icons';
+import { SiGithub, SiQiita, SiSpotify, SiTwitter, SiZenn } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
 
 const Wrapper = styled.div`
@@ -39,6 +39,9 @@ export default function SNSLinks() {
       </SNSButton>
       <SNSButton href={'https://qiita.com/chururi'}>
         <SiQiita color={'var(--color-qiita)'} size={24} />
+      </SNSButton>
+      <SNSButton href={'/?playSpotify'}>
+        <SiSpotify color={'var(--color-spotify)'} size={24} />
       </SNSButton>
     </Wrapper>
   );

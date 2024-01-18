@@ -4,7 +4,7 @@ import RSSFeeds from '@/app/_components/Introduction/RSSFeeds';
 
 const Wrapper = styled.article`
   display: grid;
-  column-gap: 2rem;
+  column-gap: 6rem;
   grid-template-columns: 350px 1fr;
   margin-top: 3rem;
   
