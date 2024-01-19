@@ -17,7 +17,13 @@ type Props = {
 
 export default async function MarkdownSection({ fileUrl }: Props) {
   const fileFetcher = async () => {
-    return await (await fetch('https://raw.githubusercontent.com/itsu-dev/itsu-dev/main/' + fileUrl)).text();
+    return await (await fetch('https://raw.githubusercontent.com/itsu-dev/itsu-dev/main/' + fileUrl,
+      {
+        next: {
+          revalidate: 1
+        }
+      }
+    )).text();
   }
 
   const text = await fileFetcher();

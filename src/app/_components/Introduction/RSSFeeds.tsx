@@ -4,6 +4,7 @@ import { styled } from '@linaria/react';
 import Link from 'next/link';
 import { SiQiita, SiZenn } from '@icons-pack/react-simple-icons';
 import Section from '@/app/_components/common/Section';
+import feedData from '@/app/_consts/feeds';
 
 const Feeds = styled.div`
   width: 100%;
@@ -47,7 +48,17 @@ const TitleLink = styled(Link)`
 `;
 
 export default async function RSSFeeds() {
-  const feeds = await parseFeeds();
+  const loadedFeeds: Record<string, string> = {};
+  for (const [url, type] of feedData) {
+    const xml = await fetch(url, {
+      next: {
+        revalidate: 1
+      }
+    });
+    loadedFeeds[type] = await xml.text();
+  }
+
+  const feeds = await parseFeeds(loadedFeeds);
 
   const getIcon = (type: FeedType) => {
     switch (type) {

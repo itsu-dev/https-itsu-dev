@@ -1,21 +1,20 @@
-import feeds from '@/app/_consts/feeds';
 import Parser from 'rss-parser';
 
-export default async function parseFeeds(): Promise<Result<RSSFeed[]>> {
+export default async function parseFeeds(feeds: Record<string, string>): Promise<Result<RSSFeed[]>> {
   const result: RSSFeed[] = [];
 
-  await Promise.all(feeds.map((feed) => (async () => {
+  for await (const [type, xml] of Object.entries(feeds)) {
     const parser = new Parser();
-    const rssFeed = await parser.parseURL(feed[0]);
+    const rssFeed = await parser.parseString(xml);
     rssFeed.items.forEach((item) =>
       result.push({
-        type: feed[1],
+        type: type as FeedType,
         title: item.title ?? '',
         url: item.link ?? '',
         unixTime: new Date(item.pubDate ?? '').getTime(),
       }),
     );
-  })()));
+  }
 
   return { success: true, result: result.sort((a, b) => a.unixTime - b.unixTime > 0 ? -1 : 1) };
 }
