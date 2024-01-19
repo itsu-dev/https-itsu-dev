@@ -1,8 +1,7 @@
-"use client";
-
 import { styled } from '@linaria/react';
 import SNSLinks from '@/app/_components/Header/SNSLinks';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,18 +10,7 @@ const Wrapper = styled.div`
   font-size: 0.85rem;
   width: 100%;
   padding-bottom: 1.5rem;
-  //border-bottom: 1px solid var(--border-color);
   position: relative;
-  
-  //:after {
-  //  position: absolute;
-  //  content: '';
-  //  width: 100%;
-  //  height: 1px;
-  //  border-bottom: 1px dashed var(--border-color);
-  //  bottom: -5px;
-  //  left: 0;
-  //}
 
   @media (max-width: 599px) {
     flex-direction: column;
@@ -33,8 +21,9 @@ const Wrapper = styled.div`
   }
 `;
 
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled(Link)`
   cursor: pointer;
+  display: block;
 `;
 
 const Title = styled.p`
@@ -51,7 +40,7 @@ const Title = styled.p`
 export default function Header() {
   return (
     <Wrapper>
-      <HeaderWrapper role={"button"} onClick={() => location.href = '/'}>
+      <HeaderWrapper href={'/'}>
         <Image src={'logo.svg'} width={200} height={50} alt={'logo'} />
         <Title>いつでぶ</Title>
       </HeaderWrapper>

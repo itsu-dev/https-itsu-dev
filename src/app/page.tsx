@@ -54,5 +54,3 @@ export default function Home({ searchParams }: { searchParams: Record<string, st
     </>
   );
 }
-
-export const runtime = 'edge';
