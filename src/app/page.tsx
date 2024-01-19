@@ -40,7 +40,6 @@ const ContentsWrapper = styled.article`
 `;
 
 export default function Home({ searchParams }: { searchParams: Record<string, string | string[] | undefined>}) {
-  console.log(searchParams);
   return (
     <>
       <Main>
@@ -55,3 +54,5 @@ export default function Home({ searchParams }: { searchParams: Record<string, st
     </>
   );
 }
+
+export const runtime = 'edge';
