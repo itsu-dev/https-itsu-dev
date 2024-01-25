@@ -1,6 +1,9 @@
+'use client';
+
 import { styled } from '@linaria/react';
 import Link from 'next/link';
 import { IconX } from '@tabler/icons-react';
+import { useSearchParams } from 'next/navigation';
 
 const Wrapper = styled.div`
   @keyframes fadeIn {
@@ -13,7 +16,7 @@ const Wrapper = styled.div`
       bottom: 1rem;
     }
   }
-  
+
   position: fixed;
   bottom: 1rem;
   right: 1rem;
@@ -36,22 +39,29 @@ const CloseButton = styled(Link)`
   border-radius: 12px 0 0 0;
   transition: all .3s;
   color: #ffffff;
-  
+
   :hover {
     background-color: #22222222;
   }
 `;
 
 export default function SpotifyPlayer() {
+  const searchParams = useSearchParams();
+
   return (
-    <Wrapper>
-      <CloseButton href={'/'}>
-        <IconX color={'white'} size={24} />
-      </CloseButton>
-      <iframe src="https://open.spotify.com/embed/artist/4QvgGvpgzgyUOo8Yp8LDm9?utm_source=generator" width="100%"
-              height="100%" frameBorder="0" allowFullScreen={false}
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"></iframe>
-    </Wrapper>
-  )
+    <>
+      {searchParams.get('playSpotify') != null && (
+        <Wrapper>
+          <CloseButton href={'/'}>
+            <IconX color={'white'} size={24} />
+          </CloseButton>
+          <iframe src='https://open.spotify.com/embed/artist/4QvgGvpgzgyUOo8Yp8LDm9?utm_source=generator' width='100%'
+                  height='100%' frameBorder='0' allowFullScreen={false}
+                  allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
+                  loading='lazy'></iframe>
+        </Wrapper>
+      )
+      }
+    </>
+  );
 }

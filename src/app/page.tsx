@@ -39,7 +39,7 @@ const ContentsWrapper = styled.article`
   }
 `;
 
-export default function Home({ searchParams }: { searchParams: Record<string, string | string[] | undefined>}) {
+export default function Home() {
   return (
     <>
       <Main>
@@ -50,7 +50,7 @@ export default function Home({ searchParams }: { searchParams: Record<string, st
         <MarkdownSection fileUrl={'past_affiliations.md'} />
         <MarkdownSection fileUrl={'works.md'} />
       </ContentsWrapper>
-      { searchParams.playSpotify != null && <SpotifyPlayer /> }
+      <SpotifyPlayer />
     </>
   );
 }

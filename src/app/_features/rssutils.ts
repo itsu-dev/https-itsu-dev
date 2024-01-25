@@ -1,12 +1,17 @@
-import Parser from 'rss-parser';
+import RSSParser from '@/app/_utils/RSSParser';
 
-export default async function parseFeeds(feeds: Record<string, string>): Promise<Result<RSSFeed[]>> {
-  const result: RSSFeed[] = [];
+export default async function parseFeeds(feeds: Record<string, string>): Promise<Result<RSSResult[]>> {
+  const result: RSSResult[] = [];
 
   for await (const [type, xml] of Object.entries(feeds)) {
-    const parser = new Parser();
+    const parser = new RSSParser();
     const rssFeed = await parser.parseString(xml);
-    rssFeed.items.forEach((item) =>
+
+    if (!rssFeed?.items) {
+      return { success: false };
+    }
+
+    rssFeed.items.forEach((item: RSSItem) =>
       result.push({
         type: type as FeedType,
         title: item.title ?? '',

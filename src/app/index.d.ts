@@ -9,7 +9,7 @@ type Result<T> =
 
 type FeedType = 'Zenn' | 'Qiita' | 'note';
 
-type RSSFeed = {
+type RSSResult = {
   type: FeedType;
   title: string;
   url: string;
@@ -39,3 +39,21 @@ type OsirifukiResponse = {
   heartBeats: number[];
   updatedAt: number;
 }
+
+type RSSParserOptions = {
+  fetchOptions: any;
+}
+
+type RSSFeed = Partial<{
+  title: string;
+  link: string;
+  description: string;
+  items: RSSItem[];
+}>;
+
+type RSSItem = Partial<{
+  title: string;
+  link: string;
+  description: string;
+  pubDate: string;
+}>;
