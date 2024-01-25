@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 const HeaderWrapper = styled(Link)`
   cursor: pointer;
   display: block;
+  border: none;
 `;
 
 const Title = styled.p`

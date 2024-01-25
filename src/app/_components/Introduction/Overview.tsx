@@ -23,16 +23,10 @@ const MyIconWrapper = styled.div`
   border-radius: 175px;
   border: 1px solid var(--border-color);
   cursor: pointer;
-  transition: all .8s;
-  
-  :hover {
-    box-shadow: var(--shadow);
-    transform: rotateY(360deg);
-  }
 
   @media (max-width: 599px) {
-    width: 90vw;
-    height: 90vw;
+    width: 60vw;
+    height: 60vw;
     border-radius: 45vw;
   }
 `;
